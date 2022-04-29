@@ -1,29 +1,33 @@
+import { UserService } from './../../services/user.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
-import { Country, State, City,  }  from 'country-state-city';
-import { getStatesOfCountry,  } from 'country-state-city/dist/lib/state';
+import { Country, State, City, } from 'country-state-city';
+import { getStatesOfCountry, } from 'country-state-city/dist/lib/state';
+import { findFlagUrlByCountryName } from "country-flags-svg";
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
-  dataTable:any = [];
+  dataTable: any = [];
   closeResult = '';
-  contact:any = '';
-  candidateForm:any = FormGroup;
+  contact: any = '';
+  candidateForm: any = FormGroup;
+  candidates: any[] = [];
+  isLoading = true;
   constructor(
     private modalService: NgbModal,
     private _formBuilder: FormBuilder,
-    private http: HttpClient
-    ) { }
+    private userService: UserService
+  ) { }
 
-    CountryISO = CountryISO;
-  fakeArray:any = [];
-  countries:any = []
+  CountryISO = CountryISO;
+  fakeArray: any = [];
+  countries: any = []
   ngOnInit(): void {
     this.fakeArray = new Array(15)
     setTimeout(() => {
@@ -51,6 +55,7 @@ export class IndexComponent implements OnInit {
     console.log('contact', this.contact)
     //console.log(this.countries)
     //console.log(State.getAllStates())
+    this.loadData();
   }
 
   get firstName() { return this.candidateForm.get('firstName'); }
@@ -96,9 +101,24 @@ export class IndexComponent implements OnInit {
     });
   }
 
+  loadData() {
+    this.userService.getUsers().subscribe((res: any) => {
+      this.isLoading = false;
+      this.candidates = this.candidateMapping(res?.data?.users || []);
+      console.log('this.candidates', this.candidates)
+    }, err => {
+      this.isLoading = false;
+    })
+  }
+
   submitData() {
     this.candidateForm.markAllAsTouched();
-    console.log(this.candidateForm.value)
+    if(this.candidateForm.invalid) {
+      return
+    }
+    this.userService.createUser(this.candidateForm.value).subscribe(res => {
+      console.log('res2', res);
+    })
   }
 
   provinces:any = [];
@@ -117,8 +137,8 @@ export class IndexComponent implements OnInit {
   cities:any = [];
   selectProvince(event:any) {
     let data = '';
-    this.provinces.forEach((element:any) => {
-      if(element.name == event.target.value ) {
+    this.provinces.forEach((element: any) => {
+      if (element.name == event.target.value) {
         this.stateCode = element.isoCode
       }
     });
@@ -138,8 +158,36 @@ export class IndexComponent implements OnInit {
       })
     }
   }
+  removeCandidate() {
+    const list = this.candidates.filter(el => el.checked === true);
+    if(list.length === 0) {
+      alert('Select a candidate');
+    } else if(confirm('Are you sure to delete selected candidates')) {
+      list.forEach(el=> {
 
-  
-
+      })
+    }
+  }
+  checkAll(e) {
+    this.candidates.forEach(el => (el['checked'] = e.checked))
+    console.log('this.candidates', this.candidates)
+  }
+  candidateMapping(list: any[]) {
+    return list.map(item => ({
+      ...item,
+      flag: findFlagUrlByCountryName(item.country),
+      active: getHumanReadableTime(item?.createdAt)
+    }))
+  }
 }
+function getHumanReadableTime(date: any) {
+  let timeScalarIndex = 0, scaledTime = new Date().valueOf() - new Date(date).valueOf() ;
+  const timeScalars = [1000, 60, 60, 24, 7, 52];
+  const timeUnits = ['ms', 'secs', 'mins', 'hrs', 'days', 'weeks', 'years'];
 
+  while (scaledTime > timeScalars[timeScalarIndex]) {
+    scaledTime /= timeScalars[timeScalarIndex++];
+  }
+
+  return `${scaledTime.toFixed(0)} ${timeUnits[timeScalarIndex]}`;
+};

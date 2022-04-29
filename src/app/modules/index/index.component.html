@@ -162,7 +162,7 @@
                     <div class="form-group col-lg-12 mb-3">
                         <input type="text" class="form-control" name="line2" formControlName="line2"   placeholder="Address line 2 (Optional)">
                     </div>
-                
+
                     <div class="form-group col-lg-4 mb-3">
                         <select class="form-control" name="province" (change)="selectProvince($event)"  formControlName="province" [ngClass]="province.invalid && (province.dirty || province.touched) ? 'form-error-img ' : '' ">
                             <option selected value="" hidden>Province</option>
@@ -195,7 +195,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="row mb-3" >
                     <div class="form-group col-lg-6 mb-3">
@@ -241,9 +241,9 @@
                         </div>
                     </div>
                 </div>
-                
-                
-            
+
+
+
         </div>
         <div class="modal-footer border-0" >
             <button type="button" class="btn btn-outline-white me-3 cancelBtn" (click)="modal.close('Save click')">Cancel</button>

@@ -91,6 +91,7 @@ export class IndexComponent implements OnInit {
     this.modalService.open(content, { size: 'lg' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
+      this.candidateForm.reset()
       //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
@@ -126,11 +127,19 @@ export class IndexComponent implements OnInit {
 
   getContactInfo() {
     console.log(this.contact);
-    this.candidateForm.patchValue({
-      countryCode: this.contact.dialCode,
-      phone: this.contact.number
-    })
+    if(this.contact !== null ) {
+      this.candidateForm.patchValue({
+        countryCode: this.contact.dialCode,
+        phone: this.contact.number
+      })
+    } else {
+      this.candidateForm.patchValue({
+        phone: null
+      })
+    }
   }
+
+  
 
 }
 

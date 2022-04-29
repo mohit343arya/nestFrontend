@@ -1,5 +1,5 @@
 .header {
-    padding: 17px 10px 17px 120px ;
+    padding: 17px 10px 17px 10px ;
     z-index: 99;
     top: 0;
     left: 0;
@@ -36,5 +36,34 @@
             color: #000;
 
         }
+    }
+
+    
+}
+@media only screen and(max-width:768px) {
+    .header {
+        .avatar-details-wrapper {
+            position: fixed;
+            top: 85px;
+            display:none!important;
+            width: calc(100% - 85px);
+            left: 85px;
+            background-color: white;
+            padding: 10px;
+            box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+        }
+        .search-form {
+            input {
+                min-width: 150px;
+            }
+        }
+        .avatar-wrapper {
+            &:hover {
+                .avatar-details-wrapper {
+                    display: flex!important;
+                    
+                }
+            }
+        } 
     }
 }

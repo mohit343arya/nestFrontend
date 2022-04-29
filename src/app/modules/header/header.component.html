@@ -1,24 +1,32 @@
-<div class="header position-fixed w-100 border-bottom d-flex bg-white">
-    <div class="col-6">
+<div class="header  w-100 border-bottom row bg-white">
+    <div class="col-md-6 col-9 d-flex align-items-center">
+        <button mat-mini-fab color="primary" class="d-md-none d-block" aria-label="Example icon button with a menu icon" (click)="toggleNav()">
+            <mat-icon>menu</mat-icon>
+        </button>
         <form class="search-form">
             <div class="input-group">
                 <div class="input-group-prepend">
-                  <div class="input-group-text border-0 " style="background-color: transparent;"><i class="fa fa-search" aria-hidden="true"></i></div>
+                  <div class="input-group-text border-0 " style="background-color: transparent;"><i class="fa fa-search mt-1" aria-hidden="true"></i></div>
                 </div>
                 <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Search by name or location">
               </div>
         </form>
     </div>
-    <div class="col-6 d-flex align-items-center">
-        <div class="avatar ms-auto rounded-circle mx-2">
-            <img src="assets/images/user.svg" class="w-100" alt="">
+    <div class="col-md-6 col-3 d-flex align-items-center  position-relative">
+        <div class="d-flex w-100 avatar-wrapper ms-lg-auto rounded-circle mx-2">
+            <div class=" ms-auto" >
+                <div class="avatar rounded-circle ms-auto"><img src="assets/images/user.svg" class="w-100" alt=""></div>
+            </div>
+            <div class=" d-flex align-items-center avatar-details-wrapper">
+                <div class="avatar-details mx-2">
+                    <div class="name">Greg-Kockott</div>
+                    <div class="details">Account Owner • HelloCrowd, Inc</div>
+                </div>
+                <div class="mx-5">
+                    <img src="assets/images/icon-phone.svg" alt="">
+                </div>
+            </div>
         </div>
-        <div class="avatar-details mx-2">
-            <div class="name">Greg-Kockott</div>
-            <div class="details">Account Owner • HelloCrowd, Inc</div>
-        </div>
-        <div class="mx-5">
-            <img src="assets/images/icon-phone.svg" alt="">
-        </div>
+       
     </div>
 </div>

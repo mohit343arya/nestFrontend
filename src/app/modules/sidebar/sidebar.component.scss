@@ -1,0 +1,25 @@
+.sidebar {
+    width: 85px;
+    z-index: 99;
+    top: 0;
+    ul {
+        list-style-type: none;
+        li {
+            padding: 0px 5px;
+            text-align: center;
+            margin: 21px 21px 20px 22px;
+            width: 40px;
+            height: 40px;
+            padding: 8px;
+        }
+    }
+    .sidebar-logo {
+        width: 100%;
+        max-width: 27px;
+    }
+    .sidebar-menu {
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+    }
+}

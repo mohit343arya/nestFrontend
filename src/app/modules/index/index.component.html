@@ -1,0 +1,252 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+
+<section class="p-5 main-wrapper">
+    <div class="d-flex">
+        <h1 class="col-6 Candidates">Candidates</h1>
+        <div class="col-6 text-end">
+            <button class="btn delete-btn me-3" type="button" >Delete</button>
+            <button class="btn add-btn me-3" type="button" (click)="open(content)">New Candidate <img src="/assets/images/add.svg" alt=""></button>
+        </div>
+    </div>
+    <div class="data-table">
+        <table class="w-100">
+            <thead class="p-5">
+              <tr>
+                <th class="text-center"><mat-checkbox class="example-margin " color="primary"></mat-checkbox></th>
+                <th scope="col">  NAME</th>
+                <th scope="col">ID NUMBER</th>
+                <th scope="col">LOCATION</th>
+                <th scope="col">EMAIL ADDRESS</th>
+                <th scope="col">MOBILE NUMBER</th>
+                <th scope="col">DAYS ACTIVE</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  *ngFor="let data of fakeArray" [ngClass]="dataTable.length > 0 ? 'd-none':''">
+                  <td class="text-center"><ngx-skeleton-loader   appearance="line" [theme]="{width:'24px'}"  animation="pulse" ></ngx-skeleton-loader></td>
+                  <td><ngx-skeleton-loader  appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
+                  <td><ngx-skeleton-loader    appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
+                  <td><ngx-skeleton-loader   appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
+                  <td><ngx-skeleton-loader  appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
+                  <td><ngx-skeleton-loader appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
+                  <td><ngx-skeleton-loader appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
+                  <td><ngx-skeleton-loader  appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
+              </tr>
+              <tr *ngFor="let item of dataTable">
+                <td class="text-center"><mat-checkbox class="example-margin " color="primary"></mat-checkbox></td>
+                <td >{{item.name}}</td>
+                <td >{{item.idNumber}}</td>
+                <td ><img src="https://cdn.britannica.com/27/4227-004-32423B42/Flag-South-Africa.jpg" class="rounded-circle me-2" style="height: 20px; width:20px; object-fit: cover;" alt="">{{item.location}}</td>
+                <td >{{item.email}}</td>
+                <td >{{item.mobile}}</td>
+                <td >{{item.active}}</td>
+                <td ><img src="assets/images/three-dots.svg" alt=""></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div class="data-table-paginator ps-5">
+        <span class="Items-per-page-15">
+            Items per page:   15
+        </span>
+        <span class="mx-3">
+            <img src="assets/images/icon-phone.svg" alt="">
+        </span>
+        <span class="---15-of-233">
+            1 - 15 of 233
+        </span>
+        <span class="ms-3">
+            <i class="fa fa-chevron-left mx-3" style="font-size: 14px;" type="button" disabled></i>
+            <i class="fa fa-chevron-right mx-3" style="font-size: 14px;"></i>
+        </span>
+    </div>
+</section>
+
+<ng-template #content let-modal>
+    <form class="candidateForm"  [formGroup]="candidateForm" >
+        <div class="modal-header px-5 py-4">
+        <h4 class="modal-title" id="modal-basic-title">Candidate Details</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body px-5 py-4">
+                <div class="row mb-3">
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="firstName" class="mb-2" [ngClass]="firstName.invalid && (firstName.dirty || firstName.touched)? 'text-danger' : 'text-dark'">Full Name</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" formControlName="firstName"  placeholder="First Name" [ngClass]="firstName.invalid && (firstName.dirty || firstName.touched) ? 'form-error-img ' : ''">
+                        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger mt-1">
+                            <div *ngIf="firstName.errors?.['required']"class  ="text-sm ">
+                                FirstName is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="lastName " class="mb-2">&nbsp;</label>
+                        <input type="text" class="form-control"  name="lastName" formControlName="lastName" placeholder="Last Name" [ngClass]="lastName.invalid && (lastName.dirty || lastName.touched) ? 'form-error-img ' : ''">
+                        <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger mt-1">
+                            <div *ngIf="lastName.errors?.['required']"  class="text-sm ">
+                                LastName is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="email " class="mb-2" [ngClass]="email.invalid && (email.dirty || email.touched) ? 'text-danger' : 'text-dark'">Email Address</label>
+                        <input type="email" class="form-control" name="email" formControlName="email"  placeholder="Email Address" [ngClass]="email.invalid && (email.dirty || email.touched) ? 'form-error-img ' : ''">
+                        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger mt-1">
+                            <div *ngIf="email.errors?.['required']"  class="text-sm ">
+                                Email is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="phone " class="mb-2" [ngClass]="phone.invalid && (phone.dirty || phone.touched) ? 'text-danger' : 'text-dark'">Mobile Number</label>
+                        <div></div>
+                        <ngx-intl-tel-input
+                            [cssClass]="'custom form-control col-12'"
+                            [enableAutoCountrySelect]="false"
+                            [enablePlaceholder]="true"
+                            [searchCountryFlag]="true"
+                            [selectFirstCountry]="true"
+                            [maxLength]="15"
+                            [phoneValidation]="true"
+                            name="phone"
+                            [selectedCountryISO]="CountryISO.SouthAfrica"
+                            [(ngModel)]="contact" [ngModelOptions]="{standalone: true}" (keyup)="getContactInfo()" [ngClass]="phone.invalid && (phone.dirty || phone.touched) ?  'form-error-img ' : ''">
+                        ></ngx-intl-tel-input>
+                        <!-- <input type="text" class="form-control"  name="phone" formControlName="phone"  placeholder="contact"> -->
+                        <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger mt-1">
+                            <div *ngIf="phone.errors?.['required']"  class="text-sm ">
+                                Contact is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="form-group col-12 mb-3">
+                        <label for="identityNumber " class="mb-2"  [ngClass]="identityNumber.invalid && (identityNumber.dirty || identityNumber.touched) ? 'text-danger' : 'text-dark'">South African Identity Number</label>
+                        <input type="text" class="form-control" name="identityNumber" formControlName="identityNumber" placeholder="Enter Your identity number" [ngClass]="identityNumber.invalid && (identityNumber.dirty || identityNumber.touched)? 'form-error-img ' : ''">
+                        <div *ngIf="identityNumber.invalid && (identityNumber.dirty || identityNumber.touched)" class="text-danger mt-1">
+                            <div *ngIf="identityNumber.errors?.['required']"  class="text-sm ">
+                                Please enter a valid South African Identity Number
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="form-group col-md-8 mb-3">
+                        <label for="address " class="mb-2" [ngClass]="address.invalid && (address.dirty || address.touched) ? 'text-danger' : 'text-dark'">Physical Address</label>
+                        <input type="text" class="form-control" name="address" formControlName="address"   placeholder="Start typing your address" [ngClass]="address.invalid && (address.dirty || address.touched) ? 'form-error-img ' : '' ">
+                        <div *ngIf="address.invalid && (address.dirty || address.touched)" class="text-danger mt-1">
+                            <div *ngIf="address.errors?.['required']"  class="text-sm ">
+                                Address is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4 mb-3">
+                        <label for="country " class="mb-2"  [ngClass]="country.invalid && (country.dirty || country.touched) ? 'text-danger' : 'text-dark'">&nbsp;</label>
+                        <select class="form-control" (change)="selectCountry($event)"  name="country" formControlName="country" [ngClass]="country.invalid && (country.dirty || country.touched) ? 'form-error-img ' : '' ">
+                            <option selected value="" hidden>Country</option>
+                            <option [value]="item.name" *ngFor="let item of countries">{{item.name}}</option>
+                        </select>
+                        <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger mt-1">
+                            <div *ngIf="country.errors?.['required']"  class="text-sm ">
+                                Country is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 mb-3">
+                        <input type="text" class="form-control" name="line2" formControlName="line2"   placeholder="Address line 2 (Optional)">
+                    </div>
+                   
+                    <div class="form-group col-md-4 mb-3">
+                        <select class="form-control" name="province" (change)="selectProvince($event)"  formControlName="province" [ngClass]="province.invalid && (province.dirty || province.touched) ? 'form-error-img ' : '' ">
+                            <option selected value="" hidden>Province</option>
+                            <option [value]="item.name" *ngFor="let item of provinces">{{item.name}}</option>
+                        </select>
+                        <div *ngIf="province.invalid && (province.dirty || province.touched)" class="text-danger mt-1">
+                            <div *ngIf="province.errors?.['required']"  class="text-sm ">
+                                Province is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4 mb-3">
+                        <select class="form-control" name="city" formControlName="city" [ngClass]="city.invalid && (city.dirty || city.touched) ? 'form-error-img ' : '' ">
+                            <option selected value="" hidden>City</option>
+                            <option [value]="item.name" *ngFor="let item of cities">{{item.name}}</option>
+                        </select>
+                        <div *ngIf="city.invalid && (city.dirty || city.touched)" class="text-danger mt-1">
+                            <div *ngIf="city.errors?.['required']"  class="text-sm ">
+                                City is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4 mb-3">
+                        <input type="text" class="form-control" name="postalCode" formControlName="postalCode"  placeholder="Postal code" formControlName="postalCode" placeholder="postalCode" [ngClass]="postalCode.invalid && (postalCode.dirty || postalCode.touched) ? 'form-error-img ' : '' ">
+                        <div *ngIf="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="text-danger mt-1">
+                            <div *ngIf="postalCode.errors?.['required']"  class="text-sm ">
+                                Postal Code is required.
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row mb-3" >
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="linkedin" class="mb-2"  [ngClass]="linkedin.invalid && (linkedin.dirty || linkedin.touched) ? 'text-danger' : 'text-dark'">Social Media Profiles</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="background-color: transparent;">www.linkedin.com/in/</div>
+                            </div>
+                            <input type="text" class="form-control" name="linkedin" formControlName="linkedin" placeholder="" [ngClass]="linkedin.invalid && (linkedin.dirty || linkedin.touched) ? 'form-error-img ' : '' ">
+                            <div *ngIf="linkedin.invalid && (linkedin.dirty || linkedin.touched)" class="text-danger mt-1">
+                                <div *ngIf="linkedin.errors?.['required']"  class="text-sm ">
+                                    Linkedin Profile is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="facebook " class="mb-2" [ngClass]="facebook.invalid && (facebook.dirty || facebook.touched) ? 'text-danger' : 'text-dark'">&nbsp;</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="background-color: transparent;">www.facebook.com/</div>
+                            </div>
+                            <input type="text" class="form-control" name="facebook" formControlName="facebook" placeholder="" [ngClass]="facebook.invalid && (facebook.dirty || facebook.touched) ? 'form-error-img ' : '' ">
+                            <div *ngIf="facebook.invalid && (facebook.dirty || facebook.touched)" class="text-danger mt-1">
+                                <div *ngIf="facebook.errors?.['required']"  class="text-sm ">
+                                    Facebook Profile is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="twitter " class="mb-2" [ngClass]="twitter.invalid && (twitter.dirty || twitter.touched) ? 'text-danger' : 'text-dark'">&nbsp;</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text" style="background-color: transparent;">www.twitter.com/</div>
+                            </div>
+                            <input type="text" class="form-control" name="twitter" formControlName="twitter" placeholder="" [ngClass]="twitter.invalid && (twitter.dirty || twitter.touched) ? 'form-error-img ' : '' ">
+                            <div *ngIf="twitter.invalid && (twitter.dirty || twitter.touched)" class="text-danger mt-1">
+                                <div *ngIf="twitter.errors?.['required']"  class="text-sm ">
+                                    Twitter Profile is required *. &nbsp; &nbsp; &nbsp; &nbsp;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            
+        </div>
+        <div class="modal-footer border-0" >
+            <button type="button" class="btn btn-outline-white me-3 cancelBtn" (click)="modal.close('Save click')">Cancel</button>
+            <button type="submit" class="btn btn-primary submitBtn" (click)="submitData()">Save</button>
+        </div>
+    </form>
+  </ng-template>
+  

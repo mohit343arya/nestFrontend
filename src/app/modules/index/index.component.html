@@ -6,7 +6,7 @@
             <div class="row">
                 <h1 class="col-md-6 Candidates">Candidates</h1>
                 <div class="col-md-6 text-md-end">
-                    <button class="btn delete-btn me-3" type="button" >Delete</button>
+                    <button class="btn delete-btn me-3" type="button" (click)="removeCandidate()">Delete</button>
                     <button class="btn add-btn me-3" type="button" (click)="open(content)">New Candidate <img src="/assets/images/add.svg" alt=""></button>
                 </div>
             </div>
@@ -14,7 +14,7 @@
                 <table class="w-100">
                     <thead class="p-5">
                     <tr>
-                        <th class="text-center"><mat-checkbox class="example-margin " color="primary"></mat-checkbox></th>
+                        <th class="text-center"><mat-checkbox (change)="checkAll($event)" class="example-margin " color="primary"></mat-checkbox></th>
                         <th scope="col">  NAME</th>
                         <th scope="col">ID NUMBER</th>
                         <th scope="col">LOCATION</th>
@@ -25,7 +25,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr  *ngFor="let data of fakeArray" [ngClass]="dataTable.length > 0 ? 'd-none':''">
+                    <tr  *ngFor="let data of fakeArray" [ngClass]="!isLoading ? 'd-none':''">
                         <td class="text-center"><ngx-skeleton-loader   appearance="line" [theme]="{width:'24px'}"  animation="pulse" ></ngx-skeleton-loader></td>
                         <td><ngx-skeleton-loader  appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
                         <td><ngx-skeleton-loader    appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
@@ -35,13 +35,13 @@
                         <td><ngx-skeleton-loader appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
                         <td><ngx-skeleton-loader  appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
                     </tr>
-                    <tr *ngFor="let item of dataTable">
-                        <td class="text-center"><mat-checkbox class="example-margin " color="primary"></mat-checkbox></td>
-                        <td >{{item.name}}</td>
-                        <td >{{item.idNumber}}</td>
-                        <td ><img src="https://cdn.britannica.com/27/4227-004-32423B42/Flag-South-Africa.jpg" class="rounded-circle me-2" style="height: 20px; width:20px; object-fit: cover;" alt="">{{item.location}}</td>
+                    <tr *ngFor="let item of candidates">
+                        <td class="text-center"><mat-checkbox [(ngModel)]="item.checked" class="example-margin " color="primary"></mat-checkbox></td>
+                        <td >{{item.firstName}}</td>
+                        <td >{{item.identityNumber}}</td>
+                        <td ><img src="https://cdn.britannica.com/27/4227-004-32423B42/Flag-South-Africa.jpg" class="rounded-circle me-2" style="height: 20px; width:20px; object-fit: cover;" alt="">{{item.address + ', ' + item.country}}</td>
                         <td >{{item.email}}</td>
-                        <td >{{item.mobile}}</td>
+                        <td >{{item.phone}}</td>
                         <td >{{item.active}}</td>
                         <td ><img src="assets/images/three-dots.svg" alt=""></td>
                     </tr>

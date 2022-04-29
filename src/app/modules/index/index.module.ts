@@ -8,6 +8,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { HttpClientModule } from '@angular/common/http';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+
 @NgModule({
   declarations: [
     IndexComponent
@@ -21,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     NgxSkeletonLoaderModule,
     NgxIntlTelInputModule,
+    GooglePlaceModule,
     RouterModule.forChild(
       [
         { path: '', component: IndexComponent }

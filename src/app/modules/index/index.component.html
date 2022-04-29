@@ -140,7 +140,7 @@
                 <div class="row mb-3">
                     <div class="form-group col-lg-8 mb-3">
                         <label for="address " class="mb-2" [ngClass]="address.invalid && (address.dirty || address.touched) ? 'text-danger' : 'text-dark'">Physical Address</label>
-                        <input type="text" class="form-control" name="address" formControlName="address"   placeholder="Start typing your address" [ngClass]="address.invalid && (address.dirty || address.touched) ? 'form-error-img ' : '' ">
+                        <input type="text" ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event)" class="form-control" name="address" formControlName="address"   placeholder="Start typing your address" [ngClass]="address.invalid && (address.dirty || address.touched) ? 'form-error-img ' : '' ">
                         <div *ngIf="address.invalid && (address.dirty || address.touched)" class="text-danger mt-1">
                             <div *ngIf="address.errors?.['required']"  class="text-sm ">
                                 Address is required.

@@ -39,7 +39,7 @@ export class UserService {
     return this.apollo
       .watchQuery({
         query: GET_USERS,
-      }).valueChanges;
+      }).refetch();
   }
   createUser(user: any) {
     return this.apollo.mutate({

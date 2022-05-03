@@ -11,9 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { HttpClientModule } from '@angular/common/http';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -36,8 +34,6 @@ import { IdNumberPipe } from 'src/app/pipe/id-number.pipe';
     MatButtonModule,
     MatMenuModule,
     MatSelectModule,
-    NgxMatSelectSearchModule,
-    MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,

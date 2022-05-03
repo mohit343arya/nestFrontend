@@ -1,11 +1,9 @@
 import { UserService } from './../../services/user.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CountryISO, SearchCountryField } from 'ngx-intl-tel-input';
-import { Country, State, City, } from 'country-state-city';
-import { getStatesOfCountry, } from 'country-state-city/dist/lib/state';
-import { findFlagUrlByCountryName } from "country-flags-svg";
+import { CountryISO } from 'ngx-intl-tel-input';
+import { AddressService } from 'src/app/services/address.service';
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -21,6 +19,7 @@ export class IndexComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private _formBuilder: FormBuilder,
+    private addressService: AddressService,
     private userService: UserService
   ) { }
 
@@ -47,7 +46,6 @@ export class IndexComponent implements OnInit {
       twitter: ['', [Validators.required]],
 
     })
-    this.countries = Country.getAllCountries();
     this.loadData();
   }
 
@@ -82,6 +80,9 @@ export class IndexComponent implements OnInit {
     }, err => {
       this.isLoading = false;
     })
+    this.addressService.getAllCountries().subscribe(res => {
+      this.countries = res;
+    });
   }
 
   submitData() {
@@ -103,10 +104,12 @@ export class IndexComponent implements OnInit {
     let data = '';
     this.countries.forEach((element: any) => {
       if (element.name == event.target.value) {
-        this.countryCode = element.isoCode
+        this.countryCode = element.iso2
       }
     });
-    this.provinces = getStatesOfCountry(this.countryCode);
+    this.addressService.getStatesOfCountry(this.countryCode).subscribe(res => {
+      this.provinces = res;
+    });
   }
 
   cities: any = [];
@@ -114,10 +117,12 @@ export class IndexComponent implements OnInit {
     let data = '';
     this.provinces.forEach((element: any) => {
       if (element.name == event.target.value) {
-        this.stateCode = element.isoCode
+        this.stateCode = element.iso2
       }
     });
-    this.cities = City.getCitiesOfState(this.countryCode, this.stateCode);
+    this.addressService.getCitiesOfState(this.countryCode, this.stateCode).subscribe(res => {
+      this.cities = res;
+    });
   }
 
   getContactInfo() {
@@ -133,8 +138,8 @@ export class IndexComponent implements OnInit {
       })
     }
   }
-  removeCandidate() {
-    const list = this.candidates.filter(el => el.checked === true);
+  removeCandidate(id = '') {
+    const list = this.candidates.filter(el => (id ? el._id === id : el.checked === true));
     const promises: any[] = [];
     if (list.length === 0) {
       alert('Select a candidate');
@@ -160,11 +165,11 @@ export class IndexComponent implements OnInit {
   candidateMapping(list: any[]) {
     return list.map(item => ({
       ...item,
-      flag: findFlagUrlByCountryName(item.country),
+      flag: '', // findFlagUrlByCountryName(item.country),
       active: getHumanReadableTime(item?.createdAt)
     }))
   }
-  public handleAddressChange(e: any) {
+  async handleAddressChange(e: any) {
     const address = e.address_components.reverse();
     this.candidateForm.patchValue({
       country: address[0].long_name,
@@ -174,16 +179,16 @@ export class IndexComponent implements OnInit {
 
     this.countries.forEach((element: any) => {
       if (element.name == this.candidateForm.value.country) {
-        this.countryCode = element.isoCode
+        this.countryCode = element.iso2
       }
     });
-    this.provinces = getStatesOfCountry(this.countryCode);
+    this.provinces = await this.addressService.getStatesOfCountry(this.countryCode);
     this.provinces.forEach((element: any) => {
       if (element.name == this.candidateForm.value.province) {
-        this.stateCode = element.isoCode
+        this.stateCode = element.iso2
       }
     });
-    this.cities = City.getCitiesOfState(this.countryCode, this.stateCode);
+    this.cities = await this.addressService.getCitiesOfState(this.countryCode, this.stateCode);
   }
 }
 function getHumanReadableTime(date: any) {

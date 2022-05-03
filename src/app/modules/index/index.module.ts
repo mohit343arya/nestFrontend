@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { IndexComponent } from './index.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared.module';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
@@ -24,6 +26,8 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
     NgxSkeletonLoaderModule,
     NgxIntlTelInputModule,
     GooglePlaceModule,
+    MatButtonModule,
+    MatMenuModule,
     RouterModule.forChild(
       [
         { path: '', component: IndexComponent }

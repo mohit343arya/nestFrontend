@@ -43,7 +43,12 @@
                         <td >{{item.email}}</td>
                         <td >{{item.phone}}</td>
                         <td >{{item.active}}</td>
-                        <td ><img src="assets/images/three-dots.svg" alt=""></td>
+                        <td >
+                          <img src="assets/images/three-dots.svg" alt="" mat-button [matMenuTriggerFor]="menu">
+                          <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="removeCandidate(item._id)">Delete</button>
+                          </mat-menu>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

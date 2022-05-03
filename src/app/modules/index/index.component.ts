@@ -1,6 +1,6 @@
 import { UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CountryISO } from 'ngx-intl-tel-input';
 import { AddressService } from 'src/app/services/address.service';
@@ -15,6 +15,7 @@ export class IndexComponent implements OnInit {
   contact: any = '';
   candidateForm: any = FormGroup;
   candidates: any[] = [];
+  myControl = new FormControl();
   isLoading = true;
   constructor(
     private modalService: NgbModal,
@@ -37,9 +38,9 @@ export class IndexComponent implements OnInit {
       identityNumber: ['', [Validators.required]],
       address: ['', [Validators.required]],
       line2: [''],
-      country: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      province: ['', [Validators.required]],
+      country: [null, [Validators.required]],
+      city: [null, [Validators.required]],
+      province: [null, [Validators.required]],
       postalCode: ['', [Validators.required]],
       linkedin: ['', [Validators.required]],
       facebook: ['', [Validators.required]],
@@ -93,6 +94,7 @@ export class IndexComponent implements OnInit {
     this.userService.createUser(this.candidateForm.value).subscribe(res => {
       this.modalService.dismissAll();
       this.candidateForm.reset();
+      this.contact = undefined;
       this.loadData();
     })
   }
@@ -103,7 +105,7 @@ export class IndexComponent implements OnInit {
   selectCountry(event: any) {
     let data = '';
     this.countries.forEach((element: any) => {
-      if (element.name == event.target.value) {
+      if (element.name == event) {
         this.countryCode = element.iso2
       }
     });
@@ -116,7 +118,7 @@ export class IndexComponent implements OnInit {
   selectProvince(event: any) {
     let data = '';
     this.provinces.forEach((element: any) => {
-      if (element.name == event.target.value) {
+      if (element.name == event) {
         this.stateCode = element.iso2
       }
     });

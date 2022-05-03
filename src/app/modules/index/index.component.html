@@ -38,15 +38,16 @@
                     <tr *ngFor="let item of candidates">
                         <td class="text-center"><mat-checkbox [(ngModel)]="item.checked" class="example-margin " color="primary"></mat-checkbox></td>
                         <td >{{item.firstName}}</td>
-                        <td >{{item.identityNumber}}</td>
+                        <td >{{item.identityNumber | idNumber}}</td>
                         <td ><img src="https://cdn.britannica.com/27/4227-004-32423B42/Flag-South-Africa.jpg" class="rounded-circle me-2" style="height: 20px; width:20px; object-fit: cover;" alt="">{{item.address + ', ' + item.country}}</td>
                         <td >{{item.email}}</td>
-                        <td >{{item.phone}}</td>
-                        <td >{{item.active}}</td>
+                        <td >{{item.countryCode + ' ' +item.phone}}</td>
+                        <td class="text-success">{{'< ' +item.active}}</td>
                         <td >
-                          <img src="assets/images/three-dots.svg" alt="" mat-button [matMenuTriggerFor]="menu">
-                          <mat-menu #menu="matMenu">
-                            <button mat-menu-item (click)="removeCandidate(item._id)">Delete</button>
+                          <img src="assets/images/three-dots.svg" style="cursor: pointer;" alt="" mat-button [matMenuTriggerFor]="menu">
+                          <mat-menu #menu="matMenu" class="py-0">
+                              <button mat-menu-item style="color: #000; ">View Candidate</button>
+                              <button mat-menu-item (click)="removeCandidate(item._id)" style="color: #000;">Delete Candidate</button>
                           </mat-menu>
                         </td>
                     </tr>
@@ -101,11 +102,14 @@
                 <div class="row mb-3">
                     <div class="form-group col-lg-6 mb-3">
                         <label for="email " class="mb-2" [ngClass]="email.invalid && (email.dirty || email.touched) ? 'text-danger' : 'text-dark'">Email Address</label>
-                        <input type="email" class="form-control" name="email" formControlName="email"  placeholder="Email Address" [ngClass]="email.invalid && (email.dirty || email.touched) ? 'form-error-img ' : ''">
-                        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger mt-1">
+                        <input type="email" class="form-control" name="email" formControlName="email"  placeholder="Email Address" [ngClass]="email.invalid && (email.dirty || email.touched) ? 'form-error-img ' : ''" email>
+                        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger mt-1" >
                             <div *ngIf="email.errors?.['required']"  class="text-sm ">
                                 Email is required.
                             </div>
+                            <div *ngIf="email.errors?.['email']">
+                                Invalid email format
+                              </div>
                         </div>
                     </div>
                     <div class="form-group col-lg-6 mb-3">
@@ -124,7 +128,7 @@
                             [(ngModel)]="contact" [ngModelOptions]="{standalone: true}" (keyup)="getContactInfo()" [ngClass]="phone.invalid && (phone.dirty || phone.touched) ?  'form-error-img ' : ''">
                         ></ngx-intl-tel-input>
                         <!-- <input type="text" class="form-control"  name="phone" formControlName="phone"  placeholder="contact"> -->
-                        <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger mt-1">
+                        <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger mt-1" >
                             <div *ngIf="phone.errors?.['required']"  class="text-sm ">
                                 Contact is required.
                             </div>
@@ -134,10 +138,16 @@
                 <div class="row mb-3">
                     <div class="form-group col-12 mb-3">
                         <label for="identityNumber " class="mb-2"  [ngClass]="identityNumber.invalid && (identityNumber.dirty || identityNumber.touched) ? 'text-danger' : 'text-dark'">South African Identity Number</label>
-                        <input type="text" class="form-control" name="identityNumber" formControlName="identityNumber" placeholder="Enter Your identity number" [ngClass]="identityNumber.invalid && (identityNumber.dirty || identityNumber.touched)? 'form-error-img ' : ''">
+                        <input type="text" class="form-control" name="identityNumber" formControlName="identityNumber" placeholder="Enter Your identity number" [ngClass]="identityNumber.invalid && (identityNumber.dirty || identityNumber.touched)? 'form-error-img ' : ''"  minlength="13" maxlength="13">
                         <div *ngIf="identityNumber.invalid && (identityNumber.dirty || identityNumber.touched)" class="text-danger mt-1">
                             <div *ngIf="identityNumber.errors?.['required']"  class="text-sm ">
                                 Please enter a valid South African Identity Number
+                            </div>
+                            <div *ngIf="identityNumber.errors?.['minlength']">
+                                Identity must be of 13 characters.
+                              </div>
+                            <div *ngIf="identityNumber.errors?.['maxlength']">
+                                Identity must be of 13 characters.
                             </div>
                         </div>
                     </div>
@@ -154,10 +164,13 @@
                     </div>
                     <div class="form-group col-lg-4 mb-3">
                         <label for="country " class="mb-2 d-lg-block d-none"  [ngClass]="country.invalid && (country.dirty || country.touched) ? 'text-danger' : 'text-dark'">&nbsp;</label>
-                        <select class="form-control" (change)="selectCountry($event)"  name="country" formControlName="country" [ngClass]="country.invalid && (country.dirty || country.touched) ? 'form-error-img ' : '' ">
-                            <option selected value="" hidden>Country</option>
-                            <option [value]="item.name" *ngFor="let item of countries">{{item.name}}</option>
-                        </select>
+                        
+                        <ng-select formControlName="country"  name="country" (change)="selectCountry($event)" class="form-control bg-white" placeholder="Select Country" [ngClass]="country.invalid && (country.dirty || country.touched) ? 'form-error-img ' : '' ">
+                            <ng-option *ngFor="let item of countries"  [value]="item.name" class="p-2">
+                                {{item.name}}
+                            </ng-option>
+                         </ng-select>
+
                         <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger mt-1">
                             <div *ngIf="country.errors?.['required']"  class="text-sm ">
                                 Country is required.
@@ -169,10 +182,14 @@
                     </div>
 
                     <div class="form-group col-lg-4 mb-3">
-                        <select class="form-control" name="province" (change)="selectProvince($event)"  formControlName="province" [ngClass]="province.invalid && (province.dirty || province.touched) ? 'form-error-img ' : '' ">
-                            <option selected value="" hidden>Province</option>
-                            <option [value]="item.name" *ngFor="let item of provinces">{{item.name}}</option>
-                        </select>
+                        
+
+                        <ng-select formControlName="province"  name="province" (change)="selectProvince($event)" class="form-control bg-white" placeholder="Select Province" [ngClass]="province.invalid && (province.dirty || province.touched) ? 'form-error-img ' : '' ">
+                            <ng-option *ngFor="let item of provinces"  [value]="item.name" class="p-2">
+                                {{item.name}}
+                            </ng-option>
+                         </ng-select>
+
                         <div *ngIf="province.invalid && (province.dirty || province.touched)" class="text-danger mt-1">
                             <div *ngIf="province.errors?.['required']"  class="text-sm ">
                                 Province is required.
@@ -181,10 +198,12 @@
                     </div>
 
                     <div class="form-group col-lg-4 mb-3">
-                        <select class="form-control" name="city" formControlName="city" [ngClass]="city.invalid && (city.dirty || city.touched) ? 'form-error-img ' : '' ">
-                            <option selected value="" hidden>City</option>
-                            <option [value]="item.name" *ngFor="let item of cities">{{item.name}}</option>
-                        </select>
+                        
+                        <ng-select formControlName="city"  name="city" class="form-control bg-white" placeholder="Select City"  [ngClass]="city.invalid && (city.dirty || city.touched) ? 'form-error-img ' : '' ">
+                            <ng-option *ngFor="let item of cities"  [value]="item.name" class="p-2">
+                                {{item.name}}
+                            </ng-option>
+                         </ng-select>
                         <div *ngIf="city.invalid && (city.dirty || city.touched)" class="text-danger mt-1">
                             <div *ngIf="city.errors?.['required']"  class="text-sm ">
                                 City is required.

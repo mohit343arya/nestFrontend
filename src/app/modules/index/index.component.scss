@@ -148,6 +148,24 @@ select{
    -webkit-appearance: listbox !important
    }
 
+::ng-deep .mat-menu-content {
+   padding: 0!important;
+   min-width: 150px;
+   width: auto;
+}
+::ng-deep button.mat-menu-item {
+   height: 45px!important;
+   line-height: unset;
+}
+.example-form {
+   min-width: 150px;
+   max-width: 500px;
+   width: 100%;
+ }
+ 
+ .example-full-width {
+   width: 100%;
+ }
 @media only screen and (max-width:768px) {
    .main-wrapper {
       .main-wrapper-inner {
@@ -158,3 +176,19 @@ select{
    }
 }
 
+::ng-deep {
+   .cdk-overlay-container {
+      z-index: 1100;
+
+   }
+   .ng-dropdown-panel {
+      left: 0;
+      top: calc(100% + 1px);
+   }
+   .ng-dropdown-panel-items {
+      background-color: white;
+   }
+   .ng-option {
+      padding: 5px 10px;
+   }
+}

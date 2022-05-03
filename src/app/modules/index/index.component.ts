@@ -184,13 +184,13 @@ export class IndexComponent implements OnInit {
         this.countryCode = element.iso2
       }
     });
-    this.provinces = await this.addressService.getStatesOfCountry(this.countryCode);
+    this.provinces = await this.addressService.getStatesOfCountry(this.countryCode).toPromise();
     this.provinces.forEach((element: any) => {
       if (element.name == this.candidateForm.value.province) {
         this.stateCode = element.iso2
       }
     });
-    this.cities = await this.addressService.getCitiesOfState(this.countryCode, this.stateCode);
+    this.cities = await this.addressService.getCitiesOfState(this.countryCode, this.stateCode).toPromise();;
   }
 }
 function getHumanReadableTime(date: any) {

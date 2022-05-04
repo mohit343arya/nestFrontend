@@ -1,3 +1,10 @@
+.logo-wrap {
+  height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #dee2e6 !important;
+}
 .sidebar {
     width: 85px;
     z-index: 99;

@@ -4,6 +4,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CountryISO } from 'ngx-intl-tel-input';
 import { AddressService } from 'src/app/services/address.service';
+import { PageEvent } from '@angular/material/paginator';
+import { findFlagUrlByCountryName } from "country-flags-svg";
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -17,6 +19,9 @@ export class IndexComponent implements OnInit {
   candidates: any[] = [];
   myControl = new FormControl();
   isLoading = true;
+
+  pageSize = 10;
+  pageIndex = 0;
   constructor(
     private modalService: NgbModal,
     private _formBuilder: FormBuilder,
@@ -80,6 +85,7 @@ export class IndexComponent implements OnInit {
     this.userService.getUsers().then((res: any) => {
       this.isLoading = false;
       this.candidates = this.candidateMapping(res?.data?.users || []);
+      console.log('this.candidates',this.candidates)
     }, err => {
       this.isLoading = false;
     })
@@ -163,11 +169,11 @@ export class IndexComponent implements OnInit {
       twitter: item.twitter,
 
     })
-    
+
     this.contact= {
       dialCode: item.countryCode,
       number:item.phone
-    } 
+    }
   }
 
   getContactInfo() {
@@ -210,7 +216,7 @@ export class IndexComponent implements OnInit {
   candidateMapping(list: any[]) {
     return list.map(item => ({
       ...item,
-      flag: '', // findFlagUrlByCountryName(item.country),
+      flag: findFlagUrlByCountryName(item.country),
       active: getHumanReadableTime(item?.createdAt)
     }))
   }
@@ -234,6 +240,10 @@ export class IndexComponent implements OnInit {
       }
     });
     this.cities = await this.addressService.getCitiesOfState(this.countryCode, this.stateCode).toPromise();;
+  }
+  handlePageEvent(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
   }
 }
 function getHumanReadableTime(date: any) {

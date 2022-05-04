@@ -35,11 +35,11 @@
                         <td><ngx-skeleton-loader appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
                         <td><ngx-skeleton-loader  appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
                     </tr>
-                    <tr *ngFor="let item of candidates; let i = index">
+                    <tr *ngFor="let item of candidates | slice:pageIndex*pageSize:(pageIndex+1)*pageSize; let i = index">
                         <td class="text-center"><mat-checkbox [(ngModel)]="item.checked" class="example-margin " color="primary"></mat-checkbox></td>
                         <td >{{item.firstName}}</td>
                         <td >{{item.identityNumber | idNumber}}</td>
-                        <td ><img src="https://cdn.britannica.com/27/4227-004-32423B42/Flag-South-Africa.jpg" class="rounded-circle me-2" style="height: 20px; width:20px; object-fit: cover;" alt="">{{item.address + ', ' + item.country}}</td>
+                        <td ><img *ngIf="item.flag" [src]="item.flag" class="rounded-circle me-2" style="height: 20px; width:20px; object-fit: cover;" alt="">{{item.address + ', ' + item.country}}</td>
                         <td >{{item.email}}</td>
                         <td >{{item.countryCode + ' ' +item.phone}}</td>
                         <td class="text-success">{{'< ' +item.active}}</td>
@@ -53,21 +53,13 @@
                     </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="data-table-paginator ps-5">
-                <span class="Items-per-page-15">
-                    Items per page:   15
-                </span>
-                <span class="mx-3">
-                    <img src="assets/images/icon-phone.svg" alt="">
-                </span>
-                <span class="---15-of-233">
-                    1 - 15 of 233
-                </span>
-                <span class="ms-3">
-                    <i class="fa fa-chevron-left mx-3" style="font-size: 14px;" type="button" disabled></i>
-                    <i class="fa fa-chevron-right mx-3" style="font-size: 14px;"></i>
-                </span>
+                <mat-paginator (page)="handlePageEvent($event)"
+                [length]="candidates.length"
+                [pageSize]="pageSize"
+                [pageIndex]="pageIndex"
+                [pageSizeOptions]="[1, 10, 20, 50]"
+                aria-label="Select page of periodic elements">
+                </mat-paginator>
             </div>
         </div>
     </div>
@@ -164,7 +156,7 @@
                     </div>
                     <div class="form-group col-lg-4 mb-3">
                         <label for="country " class="mb-2 d-lg-block d-none"  [ngClass]="country.invalid && (country.dirty || country.touched) ? 'text-danger' : 'text-dark'">&nbsp;</label>
-                        
+
                         <ng-select formControlName="country"  name="country" (change)="selectCountry($event)" class="form-control bg-white" placeholder="Select Country" [ngClass]="country.invalid && (country.dirty || country.touched) ? 'form-error-img ' : '' ">
                             <ng-option *ngFor="let item of countries"  [value]="item.name" class="p-2">
                                 {{item.name}}
@@ -182,7 +174,7 @@
                     </div>
 
                     <div class="form-group col-lg-4 mb-3">
-                        
+
 
                         <ng-select formControlName="province"  name="province" (change)="selectProvince($event)" class="form-control bg-white" placeholder="Select Province" [ngClass]="province.invalid && (province.dirty || province.touched) ? 'form-error-img ' : '' ">
                             <ng-option *ngFor="let item of provinces"  [value]="item.name" class="p-2">
@@ -198,7 +190,7 @@
                     </div>
 
                     <div class="form-group col-lg-4 mb-3">
-                        
+
                         <ng-select formControlName="city"  name="city" class="form-control bg-white" placeholder="Select City"  [ngClass]="city.invalid && (city.dirty || city.touched) ? 'form-error-img ' : '' ">
                             <ng-option *ngFor="let item of cities"  [value]="item.name" class="p-2">
                                 {{item.name}}

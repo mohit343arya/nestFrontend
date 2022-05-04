@@ -41,7 +41,7 @@
                border-bottom: solid 1px #e9edf1;
                margin: 0 25px;
                   th, td {
-                  font-size: 12px;
+                  font-size: 14px;
                   padding: 18px;
                   }
                }
@@ -51,29 +51,6 @@
                border-bottom: 0;
             }
            }
-        }
-        .data-table-paginator {
-         border-radius: 4px;
-         background-color: #f3f5f8;
-         padding: 25px;
-         .Items-per-page-15 {
-            font-size: 14px;
-            font-weight: normal;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: normal;
-            letter-spacing: normal;
-            color: #000;
-          }
-          .---15-of-233 {
-            font-size: 14px;
-            font-weight: normal;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: normal;
-            letter-spacing: normal;
-            color: #000;
-          }
         }
    }
 }
@@ -109,6 +86,14 @@
 
    }
 
+}
+
+.btn-primary {
+  background-color: #3fa6d9;
+  border-color: #3fa6d9;
+  &:hover {
+    background-color: #3fa6d9;
+  }
 }
 .modal-footer {
    background-color: #f3f5f8;
@@ -194,4 +179,25 @@ select{
    .ng-has-value .ng-placeholder {
       display: none;
     }
+    .mat-paginator {
+      background-color: #f3f5f8 !important;
+    }
+    .mat-paginator-container {
+      padding: 18px 24px !important;
+      justify-content: flex-start !important;
+    }
+    .mat-paginator, .mat-paginator-page-size .mat-select-trigger {
+      font-family: var(--bs-font-sans-serif);
+      font-size: 14px;
+      color: #000;
+  }
+  .mat-form-field-appearance-legacy .mat-form-field-underline {
+    height: 0 !important;
+  }
+  .mat-select-value {
+    padding-right: 4px;
+  }
+  .mat-select {
+    text-align: right !important;
+  }
 }

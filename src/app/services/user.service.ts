@@ -46,6 +46,11 @@ export class UserService {
       mutation: USER_POST(user)
     })
   }
+  updateUser(userId:any, user:any) {
+    return this.apollo.mutate({
+      mutation: USER_UPDATE(userId, user)
+    })
+  }
   removeUser(userId: any) {
     return this.apollo.mutate({
       mutation: USER_REMOVE(userId),
@@ -94,6 +99,52 @@ function USER_POST(user: any) {
         updatedAt
       }
   }
+
+  `
+}
+function USER_UPDATE(id: string, user: any) {
+  return gql`
+  mutation {
+    updateUser(
+      updateUserInput: {
+        _id : "${id}"
+        firstName: "${user.firstName}"
+        lastName: "${user.lastName}"
+        email: "${user.email}"
+        countryCode: "${user.countryCode}"
+        phone: "${user.phone}"
+        identityNumber: "${user.identityNumber}"
+        address: "${user.address}"
+        country: "${user.country}"
+        line2: "${user.line2}"
+        city: "${user.city}"
+        province: "${user.province}"
+        postalCode: "${user.postalCode}"
+        linkedin: "${user.linkedin}"
+        facebook: "${user.facebook}"
+        twitter: "${user.twitter}"
+      }
+    ) {
+      _id
+      firstName
+      lastName
+      email
+      countryCode
+      phone
+      identityNumber
+      address
+      country
+      line2
+      city
+      province
+      postalCode
+      linkedin
+      facebook
+      twitter
+      createdAt
+      updatedAt
+    }
+}
 
   `
 }

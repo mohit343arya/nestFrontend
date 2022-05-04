@@ -12,7 +12,7 @@ import { AddressService } from 'src/app/services/address.service';
 export class IndexComponent implements OnInit {
   dataTable: any = [];
   closeResult = '';
-  contact: any = '';
+  contact: any;
   candidateForm: any = FormGroup;
   candidates: any[] = [];
   myControl = new FormControl();
@@ -65,6 +65,8 @@ export class IndexComponent implements OnInit {
   get facebook() { return this.candidateForm.get('facebook'); }
   get twitter() { return this.candidateForm.get('twitter'); }
 
+  updateId:string = '' ;
+
   open(content: any) {
     this.modalService.open(content, { size: 'lg' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -87,16 +89,30 @@ export class IndexComponent implements OnInit {
   }
 
   submitData() {
-    this.candidateForm.markAllAsTouched();
-    if (this.candidateForm.invalid) {
-      return
+    if(this.updateId !== '') {
+      this.candidateForm.markAllAsTouched();
+      if (this.candidateForm.invalid) {
+        return
+      }
+      console.log('this.updateId', this.updateId)
+      this.userService.updateUser(this.updateId, this.candidateForm.value).subscribe(res => {
+        this.modalService.dismissAll();
+        this.candidateForm.reset();
+        this.contact.number = '';
+        this.loadData();
+      })
+    } else {
+      this.candidateForm.markAllAsTouched();
+      if (this.candidateForm.invalid) {
+        return
+      }
+      this.userService.createUser(this.candidateForm.value).subscribe(res => {
+        this.modalService.dismissAll();
+        this.candidateForm.reset();
+        this.contact.number = '';
+        this.loadData();
+      })
     }
-    this.userService.createUser(this.candidateForm.value).subscribe(res => {
-      this.modalService.dismissAll();
-      this.candidateForm.reset();
-      this.contact = undefined;
-      this.loadData();
-    })
   }
 
   provinces: any = [];
@@ -125,6 +141,33 @@ export class IndexComponent implements OnInit {
     this.addressService.getCitiesOfState(this.countryCode, this.stateCode).subscribe(res => {
       this.cities = res;
     });
+  }
+
+  updateCandidateDetails(item:any, id:any) {
+    console.log('item', item)
+    this.candidateForm.patchValue({
+      firstName: item.firstName,
+      lastName: item.lastName,
+      email: item.email,
+      phone: item.phone,
+      countryCode: item.countryCode,
+      identityNumber: item.identityNumber,
+      address: item.address,
+      line2: item.line2,
+      country: item.country,
+      city: item.city,
+      province: item.province,
+      postalCode: item.postalCode,
+      linkedin: item.linkedin,
+      facebook: item.facebook,
+      twitter: item.twitter,
+
+    })
+    
+    this.contact= {
+      dialCode: item.countryCode,
+      number:item.phone
+    } 
   }
 
   getContactInfo() {

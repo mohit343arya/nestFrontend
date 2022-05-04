@@ -7,7 +7,7 @@
                 <h1 class="col-md-6 Candidates">Candidates</h1>
                 <div class="col-md-6 text-md-end">
                     <button class="btn delete-btn me-3" type="button" (click)="removeCandidate()">Delete</button>
-                    <button class="btn add-btn me-3" type="button" (click)="open(content)">New Candidate <img src="/assets/images/add.svg" alt=""></button>
+                    <button class="btn add-btn me-3" type="button" (click)="open(content); updateId = ''; ">New Candidate <img src="/assets/images/add.svg" alt=""></button>
                 </div>
             </div>
             <div class="data-table">
@@ -35,7 +35,7 @@
                         <td><ngx-skeleton-loader appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
                         <td><ngx-skeleton-loader  appearance="line" animation="pulse" ></ngx-skeleton-loader></td>
                     </tr>
-                    <tr *ngFor="let item of candidates">
+                    <tr *ngFor="let item of candidates; let i = index">
                         <td class="text-center"><mat-checkbox [(ngModel)]="item.checked" class="example-margin " color="primary"></mat-checkbox></td>
                         <td >{{item.firstName}}</td>
                         <td >{{item.identityNumber | idNumber}}</td>
@@ -46,7 +46,7 @@
                         <td >
                           <img src="assets/images/three-dots.svg" style="cursor: pointer;" alt="" mat-button [matMenuTriggerFor]="menu">
                           <mat-menu #menu="matMenu" class="py-0">
-                              <button mat-menu-item style="color: #000; ">View Candidate</button>
+                              <button mat-menu-item style="color: #000; " (click)="open(content); updateCandidateDetails(item, item._id); updateId = item._id;">View Candidate</button>
                               <button mat-menu-item (click)="removeCandidate(item._id)" style="color: #000;">Delete Candidate</button>
                           </mat-menu>
                         </td>
@@ -271,7 +271,7 @@
         </div>
         <div class="modal-footer border-0" >
             <button type="button" class="btn btn-outline-white me-3 cancelBtn" (click)="modal.close('Save click')">Cancel</button>
-            <button type="submit" class="btn btn-primary submitBtn" (click)="submitData()">Save</button>
+            <button type="submit" class="btn btn-primary submitBtn" (click)="submitData()">{{updateId !== '' ? 'Update' : 'Save'}}</button>
         </div>
     </form>
     </ng-template>
